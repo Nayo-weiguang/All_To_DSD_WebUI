@@ -1,0 +1,11 @@
+All To DSD Web UI: local web interface for the JM21 converter
+
+Same binary as All_To_DSD_Core running in --web mode:
+
+    flac2dsf.exe --web --port 8765 --dir <folder>
+
+Browser-based drag & drop / in-place conversion, with the verified
+JM21 real processing chain available as a toggle (shaper modes 0/1/2).
+For device-equivalent output use gain 0 dB and dither 0.
+
+See ../All_To_DSD_Core for the converter and its verification summary.
