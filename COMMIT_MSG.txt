@@ -9,3 +9,5 @@ JM21 real processing chain available as a toggle (shaper modes 0/1/2).
 For device-equivalent output use gain 0 dB and dither 0.
 
 See ../All_To_DSD_Core for the converter and its verification summary.
+
+Fix: web drag&drop could not add files (invalid input.files assignment); unsupported formats now show a visible error row. Server DSP untouched, GATE 5 re-verified.
