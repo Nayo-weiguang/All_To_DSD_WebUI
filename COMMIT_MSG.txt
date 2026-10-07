@@ -15,3 +15,5 @@ Fix: web drag&drop could not add files (invalid input.files assignment); unsuppo
 Fix: rollback the DSF bit-reverse that made all output noisy; fix --jm21 -r mapping (level=log2(o.L/64)); add GATE 2c guard. Verified clean on JM21 by the user.
 
 Docs: replace machine-specific example path in web README with a generic placeholder; clarify --dir is a local PC directory.
+
+Feature: --stream real-time PCM stream input (file or stdin), byte-identical to offline conversion. Verified against GATE 5.
