@@ -5,11 +5,12 @@ JM21「All To DSD」复现转换器的**本地网页界面**。二进制与 [All
 ## 启动
 
 ```bat
-flac2dsf.exe --web --port 8765 --dir D:\music
+flac2dsf.exe --web --port 8765 --dir <你的音乐目录>
 ```
 
 - 打开 <http://127.0.0.1:8765>
-- 拖入 FLAC / WAV 上传转换，或通过 `--dir` 直接就地转换该目录下的文件
+- 拖入 FLAC / WAV 上传转换，或用 `--dir <目录>` 直接就地转换该目录下的文件
+  （`--dir` 指向**本机**的目录；仅支持 FLAC / WAV，其它格式请先用 ffmpeg 转换）
 - 产物为标准 DSF（DSD64，4096 字节分块）
 
 ## JM21 真实路径（--jm21）
