@@ -1,20 +1,26 @@
-All To DSD Web UI: local web interface for the JM21 converter
+All To DSD Core: FLAC/WAV -> DSF converter (JM21 All-To-DSD chain)
 
-Same binary as All_To_DSD_Core running in --web mode:
+Standalone Windows converter implementing the FiiO JM21 player's
+"All To DSD" digital processing chain. The chain was derived from the
+device firmware and verified against the real hardware:
 
-    flac2dsf.exe --web --port 8765 --dir <folder>
+- 18 golden vectors x 3 layers (quantiser input / 1-bit intermediate /
+  packed stream / DSF DATA): byte-exact across three independent
+  implementations
+- long-input production run (20 s, 3446 DSD blocks) structurally verified
+- device analog-output spectrum experiment confirms the noise-shaping
+  signature predicted by the digital model
+- packed DSD64 stream accepted and correctly decoded by an independent
+  DSD DAC (CS43131)
 
-Browser-based drag & drop / in-place conversion, with the verified
-JM21 real processing chain available as a toggle (shaper modes 0/1/2).
-For device-equivalent output use gain 0 dB and dither 0.
+Usage and the verified parameter set are documented in README.md.
+Source code is not included in this repository at this time.
 
-See ../All_To_DSD_Core for the converter and its verification summary.
-
-Fix: web drag&drop could not add files (invalid input.files assignment); unsupported formats now show a visible error row. Server DSP untouched, GATE 5 re-verified.
+Fix: web drag&drop could not add files (invalid input.files assignment); unsupported formats now show a visible error row.
 
 Fix: rollback the DSF bit-reverse that made all output noisy; fix --jm21 -r mapping (level=log2(o.L/64)); add GATE 2c guard. Verified clean on JM21 by the user.
 
-Docs: replace machine-specific example path in web README with a generic placeholder; clarify --dir is a local PC directory.
+Fix: rollback the DSF bit-reverse that made all output noisy; fix --jm21 -r mapping (level=log2(o.L/64)); add GATE 2c guard. Verified clean on JM21 by the user.
 
 Feature: --stream real-time PCM stream input (file or stdin), byte-identical to offline conversion. Verified against GATE 5.
 
@@ -26,8 +32,22 @@ Web UI: add 4 parameter presets (listening / JM21 DSD64 / JM21 DSD256 / lowest d
 
 Feature: AIFF/W64/RF64 built-in loaders + ffmpeg fallback bridge (CreateProcessW, fixes CJK paths on Windows). AAC/M4A/MP3 now convertible.
 
+Docs: list supported input formats in Core README.
+
 Fix: --jm21 no longer forces planarBlocks (wrong pitch/speed/noise on device, 966 Hz vs 1000 Hz measured). Default output rate is now DSD256 in both web UI and CLI.
 
 Feature: -r 64/128 now emit a 24-bit WAV from the interpolation stage only (no 1-bit quantiser), verified zero quantisation noise; -r 256/512 keep the DSF path.
 
+Docs: clarify sec.116.4; gate5 pinned to -r 256 now that low rates emit WAV.
+
 Docs: document --force-dsf (bypasses the WAV output for -r < 256) used by the regression gates.
+
+Fix: frontend accept/isAudio whitelist was never extended when the ffmpeg fallback landed, so M4A/MP3/AAC were rejected before the request was sent.
+
+Fix: decode failures now report ffmpeg's own first error line, and Apple Music FairPlay files (moov carrying sinf/schm/enca) are named as such instead of a bare "cannot decode".
+
+Fix: the web jm21 presets still forced a planar DSF layout that the CLI dropped in sec.115 (wrong pitch and speed on device, 966 Hz vs 1000 Hz measured).
+
+Fix: web API defaulted to DSD64 when no rate was given; now DSD256, matching the CLI.
+
+Feature: temp scratch directories (%TEMP%\flac2dsf-<pid>-<seq>) are now swept -- once at startup, then every 5 min -- removing only directories no live job is writing to and untouched for 60 min. A DSD256 render is ~1 GiB per song and nothing ever removed them; one afternoon of testing left 24 GiB across 145 directories.
