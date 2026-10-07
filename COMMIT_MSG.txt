@@ -11,3 +11,5 @@ For device-equivalent output use gain 0 dB and dither 0.
 See ../All_To_DSD_Core for the converter and its verification summary.
 
 Fix: web drag&drop could not add files (invalid input.files assignment); unsupported formats now show a visible error row. Server DSP untouched, GATE 5 re-verified.
+
+Fix: rollback the DSF bit-reverse that made all output noisy; fix --jm21 -r mapping (level=log2(o.L/64)); add GATE 2c guard. Verified clean on JM21 by the user.
